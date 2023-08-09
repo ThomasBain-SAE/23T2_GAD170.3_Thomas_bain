@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using TMPro;
 
 
 
 
-[SerializeField] private xtMeshPro textbox;
+
 public class TutorialText : MonoBehaviour
 {
-  
+  [SerializeField] private TextMeshProUGUI textbox;
+
 }
