@@ -15,8 +15,8 @@ public class ImpactTester : MonoBehaviour
         Debug.Log("Ouch!");
 
 
-        //Destoey the ground
-      //Destroy(collision.gameObject);
+        //Destroy the ground
+      Destroy(collision.gameObject);
     }
 
 

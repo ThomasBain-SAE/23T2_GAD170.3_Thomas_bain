@@ -1,9 +1,14 @@
+using TMPro;
 using UnityEngine;
 
 public class TutorialTrigger : MonoBehaviour
 {
-    public GameObject tutorialText; // Assign the TextMeshPro GameObject in the Inspector
+   public TextMeshProUGUI tutorialTrigger; // Assign the TextMeshPro GameObject in the Inspector
 
+    private void Start()
+    {
+        tutorialTrigger.enabled = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -11,7 +16,7 @@ public class TutorialTrigger : MonoBehaviour
             Debug.Log("Player has entered the trigger zone.");
 
             // Show the tutorial text
-            tutorialText.SetActive(true);
+            tutorialTrigger.enabled = true;
         }
     }
 
@@ -22,7 +27,7 @@ public class TutorialTrigger : MonoBehaviour
             Debug.Log("Player has exited the trigger zone.");
 
             // Hide the tutorial text
-            tutorialText.SetActive(false);
+            tutorialTrigger.enabled = false;
         }
     }
 }
