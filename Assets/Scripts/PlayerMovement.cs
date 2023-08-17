@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     // The mouse will let you turn the object, and therefore, the camera.
 
     // These variables (visible in the inspector) are for you to set up to match the right feel
-   [SerializeField] private float movementSpeed = 12f;
+    [SerializeField] private float movementSpeed = 12f;
     private float yawSpeed = 2.0f;
     private float pitchSpeed = 2.0f;
     private float yawAngle = 0.0f;
@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
             // ...then this searches the components on the gameobject and gets a reference to the CharacterController class
             controller = GetComponent<CharacterController>();
         }
+
     }
 
     private void Update()
@@ -80,5 +81,6 @@ public class PlayerMovement : MonoBehaviour
 
         // Finally, it applies that vector it just made to the character
         controller.Move(move * movementSpeed * Time.deltaTime + velocity * Time.deltaTime);
+
     }
 }

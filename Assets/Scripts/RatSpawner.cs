@@ -3,11 +3,11 @@ using UnityEngine;
 public class RatSpawner : MonoBehaviour
 {
     public GameObject prefabToSpawn;
-    public float spawnInterval = 2f;
-    public float spawnForce = 10f; // Adjust the force as needed
-    public float maxDeviationAngle = 45f; // Maximum angle deviation in degrees
-    public int maxPopulation = 10; // Maximum number of spawned objects allowed
-    public float objectLifetime = 5f; // Time after which spawned objects are destroyed
+    private float spawnInterval = 2f;
+    private float spawnForce = 10f; // Adjust the force as needed
+    private float maxDeviationAngle = 45f; // Maximum angle deviation in degrees
+    private int maxPopulation = 10; // Maximum number of spawned objects allowed
+    private float objectLifetime = 5f; // Time after which spawned objects are destroyed
 
     private float timeSinceLastSpawn = 0f;
     private int currentPopulation = 0;
