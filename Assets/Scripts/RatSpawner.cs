@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class RatSpawner : MonoBehaviour
 {
-    public GameObject prefabToSpawn;
+    public GameObject prefabToSpawn; //spawn selected thing
     public AudioClip spawnSound; // Assign the audio clip in the Inspector
-    private AudioSource audioSource;
+    private AudioSource audioSource; 
 
     private float spawnInterval = 2f;
-    private float spawnForce = 10f;
+    private float spawnForce = 50f;
     private float maxDeviationAngle = 45f;
     private int maxPopulation = 500;
-    private float objectLifetime = 5f;
+    private float objectLifetime = 10f;
 
     private float timeSinceLastSpawn = 0f;
     private int currentPopulation = 0;
