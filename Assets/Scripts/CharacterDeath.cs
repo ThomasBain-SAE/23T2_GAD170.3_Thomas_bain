@@ -4,7 +4,8 @@ public class CharacterDeath : MonoBehaviour
 {
     public int maxHealth = 1;
     public GameObject deathEffect;
-    public Transform respawnPoint; // Assign the "RespawnPoint" GameObject here
+    [SerializeField] public Transform Player;
+    [SerializeField] public Transform respawnPoint; // Assign the "RespawnPoint" GameObject here
 
     private int currentHealth;
     private bool isDead = false;
@@ -24,13 +25,18 @@ public class CharacterDeath : MonoBehaviour
 
     private IEnumerator RespawnWithDelay()
     {
-        yield return new WaitForSeconds(3f); // Wait for 3 seconds
+        Debug.Log("RespawnWithDelay coroutine started");
+
+        yield return new WaitForSeconds(3f);
+
+        Debug.Log("RespawnWithDelay coroutine resumed");
+
 
         // Reset health
         currentHealth = maxHealth;
 
         // Move the character to the respawn point's position
-        transform.position = respawnPoint.position;
+        Player.transform.position = respawnPoint.transform.position;
 
         // Re-enable movement and other components
         GetComponent<PlayerMovement>().enabled = true;

@@ -3,47 +3,56 @@ using UnityEngine;
 public class RatSpawner : MonoBehaviour
 {
     public GameObject prefabToSpawn;
+    public AudioClip spawnSound; // Assign the audio clip in the Inspector
+    private AudioSource audioSource;
+
     private float spawnInterval = 2f;
-    private float spawnForce = 10f; // Adjust the force as needed
-    private float maxDeviationAngle = 45f; // Maximum angle deviation in degrees
-    private int maxPopulation = 10; // Maximum number of spawned objects allowed
-    private float objectLifetime = 5f; // Time after which spawned objects are destroyed
+    private float spawnForce = 10f;
+    private float maxDeviationAngle = 45f;
+    private int maxPopulation = 500;
+    private float objectLifetime = 5f;
 
     private float timeSinceLastSpawn = 0f;
     private int currentPopulation = 0;
 
+    private void Start()
+    {
+        // Get or add the AudioSource component
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+    }
+
     private void Update()
     {
-        // Count the time since the last spawn
         timeSinceLastSpawn += Time.deltaTime;
 
-        // Check if it's time to spawn and if the population cap is not reached
         if (timeSinceLastSpawn >= spawnInterval && currentPopulation < maxPopulation)
         {
-            // Reset the timer
             timeSinceLastSpawn = 0f;
 
-            // Spawn the prefab
+            // Play the spawn sound
+            if (spawnSound != null && audioSource != null)
+            {
+                audioSource.clip = spawnSound;
+                audioSource.Play();
+            }
+
             GameObject spawnedObject = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
 
-            // Apply forward velocity with random angle deviation
             Rigidbody spawnedRigidbody = spawnedObject.GetComponent<Rigidbody>();
             if (spawnedRigidbody != null)
             {
-                // Calculate a random deviation angle
                 float deviationAngle = Random.Range(-maxDeviationAngle, maxDeviationAngle);
-
-                // Calculate the direction rotated by the deviation angle
                 Quaternion deviationRotation = Quaternion.Euler(0f, deviationAngle, 0f);
                 Vector3 spawnDirection = deviationRotation * transform.forward;
 
-                // Apply velocity
                 spawnedRigidbody.velocity = spawnDirection.normalized * spawnForce;
 
-                // Increase the current population count
                 currentPopulation++;
 
-                // Destroy the spawned object after the specified objectLifetime
                 Destroy(spawnedObject, objectLifetime);
             }
         }
