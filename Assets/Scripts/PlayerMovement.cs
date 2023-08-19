@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
+
+
+//My movement script has been moddified partially to allow for things I required
 public class PlayerMovement : MonoBehaviour
 {
     // INSTRUCTIONS
@@ -18,9 +21,9 @@ public class PlayerMovement : MonoBehaviour
     private float pitchSpeed = 2.0f;
     private float yawAngle = 0.0f;
     private float pitchAngle = 0.0f;
-   
-    Animator animator;
-    int isRunningHash;
+
+    Animator animator; // Reference to the Animator component
+    int isRunningHash; // Hash code for the "isRunning" parameter in the Animator
 
 
     // This must be linked to the object that has the "Character Controller" in the inspector. You may need to add this component to the object
@@ -48,10 +51,10 @@ public class PlayerMovement : MonoBehaviour
             controller = GetComponent<CharacterController>();
         }
 
-        animator = GetComponent<Animator>();
-        isRunningHash = Animator.StringToHash("isRunning");
+        animator = GetComponent<Animator>(); // Get the Animator component from this GameObject
+        isRunningHash = Animator.StringToHash("isRunning"); // Get the hash code for the "isRunning" parameter
     }
-    public void MovetoPlace(bool status)
+    public void MoveToPlace(bool status) // Custom method to enable/disable character movement
     {
         CharacterController controller = GetComponent<CharacterController>();
         controller.enabled = status;

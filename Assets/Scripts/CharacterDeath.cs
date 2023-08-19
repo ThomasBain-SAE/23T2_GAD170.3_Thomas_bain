@@ -1,103 +1,106 @@
-using UnityEngine;
-using TMPro; // You'll need to add this for TextMeshPro components
-using System.Collections;
+using UnityEngine; // Import the Unity engine namespace
+using TMPro; // Import the TextMeshPro namespace
+using System.Collections; // Import the System.Collections namespace
 
-public class CharacterDeath : MonoBehaviour
+public class CharacterDeath : MonoBehaviour // Declare the class named CharacterDeath
 {
-    public int maxHealth = 1;
-    public GameObject deathEffect;
-    [SerializeField] public Transform Player;
+    public int maxHealth = 1; // Maximum health of the character
+    public GameObject deathEffect; // Effect to instantiate on death
+    [SerializeField] public Transform Player; // Reference to the player's transform
     [SerializeField] private string respawnTag = "Respawn"; // Tag for respawn points
-    public TextMeshProUGUI respawnPopup; // Reference to the TextMeshPro text element
+    public TextMeshProUGUI respawnPopup; // Reference to the TextMeshPro text element for respawn UI
 
-    private int currentHealth;
-    private bool isDead = false;
-   
-    public void Start()
+    private int currentHealth; // Current health of the character
+    private bool isDead = false; // Flag to indicate if the character is dead
+
+    private int deathCount = 0; // Counter for the number of times the character has died
+
+    public void Start() // Start method, executed when the script initializes
     {
-        currentHealth = maxHealth;
+        currentHealth = maxHealth; // Set current health to maximum health
         respawnPopup.gameObject.SetActive(false); // Hide the respawn popup initially
     }
 
-    private void Update()
+    private void Update() // Update method, executed every frame
     {
-        if (isDead)
+        if (isDead) // If the character is dead
         {
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R)) // Check if the R key is pressed
             {
-                StartCoroutine(RespawnWithDelay());
-
-                Player.MovetoPlace(false);
-                Player.MovetoPlace(true);
+                StartCoroutine(RespawnWithDelay()); // Start the respawn coroutine
             }
         }
     }
 
-    private IEnumerator RespawnWithDelay()
+    private IEnumerator RespawnWithDelay() // Coroutine for respawning with a delay
     {
         respawnPopup.gameObject.SetActive(false); // Hide the respawn popup
 
         Debug.Log("RespawnWithDelay coroutine started");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3f); // Wait for 3 seconds
 
         Debug.Log("RespawnWithDelay coroutine resumed");
 
-        // Reset health
-        currentHealth = maxHealth;
+        currentHealth = maxHealth; // Reset the health to maximum
 
-        // Find a respawn point with the specified tag
-        GameObject[] respawnPoints = GameObject.FindGameObjectsWithTag(respawnTag);
-        if (respawnPoints.Length > 0)
+        GameObject[] respawnPoints = GameObject.FindGameObjectsWithTag(respawnTag); // Find respawn points with the specified tag
+        if (respawnPoints.Length > 0) // Check if respawn points were found
         {
-            // Move the character to a random respawn point's position
-            int randomIndex = Random.Range(0, respawnPoints.Length);
-            Player.transform.position = respawnPoints[randomIndex].transform.position;
+            int randomIndex = Random.Range(0, respawnPoints.Length); // Get a random index
+            Player.gameObject.GetComponent<PlayerMovement>().MoveToPlace(false); // Disable player movement temporarily
+            Player.transform.position = respawnPoints[randomIndex].transform.position; // Move player to the selected respawn point
+            Player.gameObject.GetComponent<PlayerMovement>().MoveToPlace(true); // Enable player movement
         }
         else
         {
-            Debug.LogWarning("No respawn points found with tag: " + respawnTag);
+            Debug.LogWarning("No respawn points found with tag: " + respawnTag); // Log a warning if no respawn points were found
         }
 
-        // Re-enable movement and other components
-        GetComponent<PlayerMovement>().enabled = true;
+        GetComponent<PlayerMovement>().enabled = true; // Enable player movement
 
-        isDead = false;
+        isDead = false; // Reset the death flag
+
+        deathCount++; // Increment death count
     }
 
-    public void TakeDamage(int damageAmount)
+    public void TakeDamage(int damageAmount) // Method to take damage
     {
-        if (isDead) return;
+        if (isDead) return; // If the character is already dead, return
 
-        currentHealth -= damageAmount;
+        currentHealth -= damageAmount; // Reduce health by damage amount
 
-        if (currentHealth <= 0)
+        if (currentHealth <= 0) // Check if health is zero or negative
         {
-            Die();
+            Die(); // Call the Die method
         }
     }
 
-    private void Die()
+    private void Die() // Method executed when the character dies
     {
-        if (isDead) return;
+        if (isDead) return; // If the character is already dead, return
 
-        isDead = true;
+        isDead = true; // Set the death flag
 
-        // Play death animation or other effects here
-
-        if (deathEffect != null)
+        if (deathEffect != null) // Check if a death effect prefab is assigned
         {
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
+            Instantiate(deathEffect, transform.position, Quaternion.identity); // Instantiate the death effect
         }
 
-        // Disable movement and any other relevant components
-        GetComponent<PlayerMovement>().enabled = false;
+        GetComponent<PlayerMovement>().enabled = false; // Disable movement and other relevant components
 
         respawnPopup.gameObject.SetActive(true); // Show the respawn popup
+
+        deathCount++; // Increment death count
     }
 
-    public bool IsDead()
+    public bool IsDead() // Method to check if the character is dead
     {
-        return isDead;
+        return isDead; // Return the value of the death flag
+    }
+
+    public int GetDeathCount() // Method to get the death count
+    {
+        return deathCount; // Return the death count
     }
 }
