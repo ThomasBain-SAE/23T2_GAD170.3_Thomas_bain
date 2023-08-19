@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private float pitchSpeed = 2.0f;
     private float yawAngle = 0.0f;
     private float pitchAngle = 0.0f;
+   
+    Animator animator;
+    int isRunningHash;
+
 
     // This must be linked to the object that has the "Character Controller" in the inspector. You may need to add this component to the object
     private CharacterController controller;
@@ -44,6 +48,13 @@ public class PlayerMovement : MonoBehaviour
             controller = GetComponent<CharacterController>();
         }
 
+        animator = GetComponent<Animator>();
+        isRunningHash = Animator.StringToHash("isRunning");
+    }
+    public void MovetoPlace(bool status)
+    {
+        CharacterController controller = GetComponent<CharacterController>();
+        controller.enabled = status;
     }
 
     private void Update()
@@ -56,6 +67,25 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+        {
+            bool isRunning = animator.GetBool("isRunning");
+            bool Forwardpressed = (Input.GetKey(KeyCode.W));
+
+            //if player presses W key
+            if (!isRunning && Forwardpressed)
+            {
+                //then set isRunning to true
+                animator.SetBool(isRunningHash, true);
+            }
+
+            //if W key is not being pressed
+            if (isRunning && !Forwardpressed)
+            {
+                //then set isRunning to false
+                animator.SetBool(isRunningHash, false);  // Change this line
+            }
+
+        }
         // Let the player jump if they are on the ground and they press the jump button
         if (Input.GetButtonDown("Jump") && isGrounded)
         {

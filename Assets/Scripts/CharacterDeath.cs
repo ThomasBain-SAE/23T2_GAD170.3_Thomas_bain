@@ -8,12 +8,11 @@ public class CharacterDeath : MonoBehaviour
     public GameObject deathEffect;
     [SerializeField] public Transform Player;
     [SerializeField] private string respawnTag = "Respawn"; // Tag for respawn points
-    public TMP_Text respawnPopup; // Reference to the TextMeshPro text element
+    public TextMeshProUGUI respawnPopup; // Reference to the TextMeshPro text element
 
     private int currentHealth;
     private bool isDead = false;
-    private float threshold;
-
+   
     public void Start()
     {
         currentHealth = maxHealth;
@@ -27,6 +26,9 @@ public class CharacterDeath : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.R))
             {
                 StartCoroutine(RespawnWithDelay());
+
+                Player.MovetoPlace(false);
+                Player.MovetoPlace(true);
             }
         }
     }
@@ -61,14 +63,6 @@ public class CharacterDeath : MonoBehaviour
         GetComponent<PlayerMovement>().enabled = true;
 
         isDead = false;
-    }
-
-    private void FixedUpdate()
-    {
-        if (transform.position.y < threshold)
-        {
-            transform.position = new Vector3(0f, 0f, -50.24f);
-        }
     }
 
     public void TakeDamage(int damageAmount)

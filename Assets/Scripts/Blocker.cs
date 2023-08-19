@@ -20,7 +20,7 @@ public class Blocker : MonoBehaviour
             blocker.transform.position = blocker.transform.position + (Vector3.up * movespeed) * Time.deltaTime;
             if (blocker.transform.position.y < deltaTime)
             {
-                movespeed = 1000;
+                movespeed = 1050;
             }
 
             buttonPressCount++; // Increment the button press counter
