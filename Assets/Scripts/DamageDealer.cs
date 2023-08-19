@@ -14,7 +14,8 @@ public class DamageDealer : MonoBehaviour
             characterDeath.TakeDamage(damageAmount);
 
             // Destroy the spawned object after dealing damage (optional)
-           // Destroy(gameObject);
+            // Destroy(gameObject);
         }
     }
 }
+

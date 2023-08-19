@@ -6,7 +6,7 @@ public class RatSpawner : MonoBehaviour
     public AudioClip spawnSound; // Assign the audio clip in the Inspector
     private AudioSource audioSource; 
 
-    private float spawnInterval = 2f;
+    private float spawnInterval = 1f;
     private float spawnForce = 50f;
     private float maxDeviationAngle = 45f;
     private int maxPopulation = 500;

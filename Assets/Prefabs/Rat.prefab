@@ -1200,7 +1200,7 @@ GameObject:
   - component: {fileID: 4554216687924395805}
   - component: {fileID: 4026730522612550208}
   - component: {fileID: 6506397121152868558}
-  - component: {fileID: -4465317242461733568}
+  - component: {fileID: -2760673413527137779}
   m_Layer: 0
   m_Name: Rat
   m_TagString: Untagged
@@ -1252,9 +1252,9 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 5}
+  m_Size: {x: 2, y: 3, z: 7}
   m_Center: {x: 0, y: 1, z: 1}
---- !u!114 &-4465317242461733568
+--- !u!114 &-2760673413527137779
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1266,7 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951a1e202e02544448c9e2e2cac07859, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 10
+  damageAmount: 100
 --- !u!1 &3793667176387984662
 GameObject:
   m_ObjectHideFlags: 0

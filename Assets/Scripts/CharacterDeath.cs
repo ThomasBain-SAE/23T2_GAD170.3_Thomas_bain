@@ -1,47 +1,74 @@
 using UnityEngine;
+using TMPro; // You'll need to add this for TextMeshPro components
 using System.Collections;
+
 public class CharacterDeath : MonoBehaviour
 {
     public int maxHealth = 1;
     public GameObject deathEffect;
     [SerializeField] public Transform Player;
-    [SerializeField] public Transform respawnPoint; // Assign the "RespawnPoint" GameObject here
+    [SerializeField] private string respawnTag = "Respawn"; // Tag for respawn points
+    public TMP_Text respawnPopup; // Reference to the TextMeshPro text element
 
     private int currentHealth;
     private bool isDead = false;
+    private float threshold;
 
-    private void Start()
+    public void Start()
     {
         currentHealth = maxHealth;
+        respawnPopup.gameObject.SetActive(false); // Hide the respawn popup initially
     }
 
     private void Update()
     {
-        if (isDead && Input.GetKeyDown(KeyCode.R))
+        if (isDead)
         {
-            StartCoroutine(RespawnWithDelay());
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                StartCoroutine(RespawnWithDelay());
+            }
         }
     }
 
     private IEnumerator RespawnWithDelay()
     {
+        respawnPopup.gameObject.SetActive(false); // Hide the respawn popup
+
         Debug.Log("RespawnWithDelay coroutine started");
 
         yield return new WaitForSeconds(3f);
 
         Debug.Log("RespawnWithDelay coroutine resumed");
 
-
         // Reset health
         currentHealth = maxHealth;
 
-        // Move the character to the respawn point's position
-        Player.transform.position = respawnPoint.transform.position;
+        // Find a respawn point with the specified tag
+        GameObject[] respawnPoints = GameObject.FindGameObjectsWithTag(respawnTag);
+        if (respawnPoints.Length > 0)
+        {
+            // Move the character to a random respawn point's position
+            int randomIndex = Random.Range(0, respawnPoints.Length);
+            Player.transform.position = respawnPoints[randomIndex].transform.position;
+        }
+        else
+        {
+            Debug.LogWarning("No respawn points found with tag: " + respawnTag);
+        }
 
         // Re-enable movement and other components
         GetComponent<PlayerMovement>().enabled = true;
 
         isDead = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (transform.position.y < threshold)
+        {
+            transform.position = new Vector3(0f, 0f, -50.24f);
+        }
     }
 
     public void TakeDamage(int damageAmount)
@@ -56,7 +83,7 @@ public class CharacterDeath : MonoBehaviour
         }
     }
 
-    public void Die()
+    private void Die()
     {
         if (isDead) return;
 
@@ -71,5 +98,12 @@ public class CharacterDeath : MonoBehaviour
 
         // Disable movement and any other relevant components
         GetComponent<PlayerMovement>().enabled = false;
+
+        respawnPopup.gameObject.SetActive(true); // Show the respawn popup
+    }
+
+    public bool IsDead()
+    {
+        return isDead;
     }
 }
